@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from datetime import date
 
 
-
 class Genre(models.Model):
     name = models.CharField(max_length=200,
                             help_text="Введите жанр книги (например, научная фантастика, французская поэзия и т. д.).")
@@ -73,5 +72,3 @@ class Author(models.Model):
 
     def __str__(self):
         return '%s, %s' % (self.last_name, self.first_name)
-
-
