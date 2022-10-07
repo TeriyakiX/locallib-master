@@ -28,6 +28,12 @@ class Book(models.Model):
 
     display_genre.short_description = 'Genre'
 
+    def get_absolute_url(self):
+        return reverse('book-detail', args=[str(self.id)])
+
+    def boroowed(self):
+        return
+
 
 class BookInstance(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
