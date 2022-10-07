@@ -31,9 +31,6 @@ class Book(models.Model):
     def get_absolute_url(self):
         return reverse('book-detail', args=[str(self.id)])
 
-    def boroowed(self):
-        return
-
 
 class BookInstance(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
@@ -78,3 +75,11 @@ class Author(models.Model):
 
     def __str__(self):
         return '%s, %s' % (self.last_name, self.first_name)
+
+
+class Borrow(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user

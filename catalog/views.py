@@ -11,6 +11,11 @@ from .forms import RenewBookForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Author
+from django.views.generic import DetailView, ListView
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import Borrow
+from django.shortcuts import render, redirect
 
 
 def index(request):
@@ -49,6 +54,9 @@ class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         return BookInstance.objects.filter(borrower=self.request.user).filter(status__exact='o').order_by('due_back')
+
+    def request(self):
+        return
 
 
 @permission_required('catalog.can_mark_returned')
@@ -104,3 +112,21 @@ class AuthorListView(generic.ListView):
 
 class AuthorDetailView(generic.DetailView):
     model = Author
+
+
+@login_required
+def borrow(request, book_id):
+    Borrow(
+        user_id=request.user.id,
+        product_id=book_id
+    ).save()
+    return redirect('/mybooks/')
+
+
+class UserProfileView(ListView, LoginRequiredMixin):
+    login_required()
+    template_name = 'bookinstance_list_borrowed_user.html'
+    context_object_name = 'borrows'
+
+    def get_queryset(self):
+        return Borrow.objects.filter(user_id=self.request.user.id)
