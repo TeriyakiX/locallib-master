@@ -1,7 +1,6 @@
 from django.urls import path
 from . import views
 from django.conf.urls import url
-from .views import borrow
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
@@ -14,7 +13,7 @@ urlpatterns = [
     url(r'^author/(?P<pk>\d+)/delete/$', views.AuthorDelete.as_view(), name='author_delete'),
     url(r'^author/(?P<pk>\d+)$', views.AuthorDetailView.as_view(), name='author-detail'),
     url(r'^authors/$', views.AuthorListView.as_view(), name='authors'),
-    path('book-detail/<book_id>/borrow', borrow, name="borrow"),
-    url(r'^mybooks/$', views.LoanedBooksByUserListView.as_view(), name='my-borrowed'),
+    path('book-detail/<book_id>/borrow', views.borrow, name="borrow"),
+    url(r'^mybooks/$', views.LoanedBooksByUserListView.borrow, name='my-borrowed'),
 
 ]

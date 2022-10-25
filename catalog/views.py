@@ -43,14 +43,13 @@ class BookListView(generic.ListView):
 class BookDetailView(generic.DetailView):
     model = Book
 
-
 @login_required
 def borrow(request, book_id):
-    Borrow(
-        user_id=request.user.id,
-        book_id=book_id
-    ).save()
-    return redirect('/mybooks')
+    if request.method == 'POST':
+        Borrow(
+            owner=request.user,
+            book_id=book_id
+        ).save()
 
 
 class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
@@ -61,13 +60,16 @@ class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
     template_name = 'catalog/bookinstance_list_borrowed_user.html'
     paginate_by = 10
 
-    def get_queryset(self):
-
+    def borrow(request, book):
         if request.method == 'POST':
+            Borrow(
+                user=request.user,
+                book=request.
+            ).save()
 
-            return BookInstance.objects.filter(borrower=self.request.user).order_by('due_back')
+    def get_queryset(self):
+        return BookInstance.objects.filter(borrower=self.request.user).order_by('due_back')
 
-    
 
 @permission_required('catalog.can_mark_returned')
 def renew_book_librarian(request, pk):
