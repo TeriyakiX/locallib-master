@@ -1,11 +1,11 @@
 from django.contrib import admin
-
+from .models import Borrow, Book
 from .models import Author, Genre, Book, BookInstance
 
 # admin.site.register(Book)
 # admin.site.register(Author)
 admin.site.register(Genre)
-
+admin.site.register(Borrow)
 
 # admin.site.register(BookInstance)
 

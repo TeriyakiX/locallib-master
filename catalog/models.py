@@ -63,6 +63,8 @@ class BookInstance(models.Model):
             return True
         return False
 
+    def get_queryset(self):
+        return Borrow.objects.filter(user_id=self.request.user.id)
 
 class Author(models.Model):
     first_name = models.CharField(max_length=100)
@@ -82,4 +84,4 @@ class Borrow(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.user
+        return '%s (%s)' % (self.id, self.book.title)
