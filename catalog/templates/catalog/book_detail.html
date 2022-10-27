@@ -20,10 +20,8 @@
     <p class="text-muted"><strong>Id:</strong> {{copy.id}}</p>
     {% endfor %}
 </div>
-<form role="form" action = "{% url 'my-borrowed'%}" method="POST">
+<form role="form" action="{% url 'borrow' book.id %}" method="POST">
 {% csrf_token %}
-<!--    <a href="{% url 'borrow' book.id %}" >{{ book.title}}-->
 <button type="submit"  class="btn btn-primary">Добавить в избранное</button>
-<!--    </a>-->
 </form>
 {%endblock%}

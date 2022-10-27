@@ -66,6 +66,7 @@ class BookInstance(models.Model):
     def get_queryset(self):
         return Borrow.objects.filter(user_id=self.request.user.id)
 
+
 class Author(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)

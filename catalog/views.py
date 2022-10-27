@@ -43,32 +43,24 @@ class BookListView(generic.ListView):
 class BookDetailView(generic.DetailView):
     model = Book
 
-@login_required
-def borrow(request, book_id):
-    if request.method == 'POST':
-        Borrow(
-            owner=request.user,
-            book_id=book_id
-        ).save()
-
 
 class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
-    """
-    Generic class-based view listing books on loan to current user.
-    """
-    model = BookInstance
+    login_required()
     template_name = 'catalog/bookinstance_list_borrowed_user.html'
+    context_object_name = 'borrows'
     paginate_by = 10
 
-    def borrow(request, book):
-        if request.method == 'POST':
-            Borrow(
-                user=request.user,
-                book=request.
-            ).save()
-
     def get_queryset(self):
-        return BookInstance.objects.filter(borrower=self.request.user).order_by('due_back')
+        return Borrow.objects.filter(user_id=self.request.user.id)
+
+
+@login_required
+def borrow(request, book_id):
+    Borrow(
+        user=request.user,
+        book_id=book_id
+    ).save()
+    return redirect('/catalog/mybooks/')
 
 
 @permission_required('catalog.can_mark_returned')
